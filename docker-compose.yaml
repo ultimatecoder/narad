@@ -6,9 +6,16 @@ services:
       - 8000:8000
     links:
       - postgres
+      - redis
+      - celery
     environment:
       - DATABASE_URL=postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgres:${POSTGRESQL_PORT}/postgres
       - DJANGO_SETTINGS_MODULE=narad.settings
+      - WEBTIMEOUT=${WEBTIMEOUT}
+      - CELERY_BROKER_URL=redis://redis:6379
+      - CELERY_RESULT_BACKEND=redis://redis:6379
+      - CELERY_TASK_SERIALIZER=json
+      - CELERY_RESULT_SERIALIZER=json
   postgres:
     image: postgres
     ports:
@@ -17,3 +24,11 @@ services:
       - /tmp/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+  redis:
+    image: redis
+  celery:
+    build: ./narad
+    command: celery -A narad worker -l info
+    links:
+      - postgres
+      - redis

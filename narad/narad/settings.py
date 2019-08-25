@@ -120,3 +120,10 @@ STATIC_URL = '/static/'
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+# Celery
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = os.environ.get('CELERY_TASK_SERIALIZER')
+CELERY_RESULT_SERIALIZER = os.environ.get('CELERY_RESULT_SERIALIZER')
