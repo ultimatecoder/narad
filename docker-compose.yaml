@@ -1,0 +1,19 @@
+version: '3'
+services:
+  webapp:
+    build: ./narad
+    ports:
+      - 8000:8000
+    links:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgres:${POSTGRESQL_PORT}/postgres
+      - DJANGO_SETTINGS_MODULE=narad.settings
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /tmp/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}

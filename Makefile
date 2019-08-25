@@ -1,4 +1,11 @@
+build:
+	pip install pipenv
+	cd narad && pipenv install
 migrations:
-	pipenv run python narad/manage.py makemigrations
+	cd narad && pipenv run python manage.py makemigrations
 migrate:
-	pipenv run python narad/manage.py migrate
+	cd narad && pipenv run python manage.py migrate
+run:
+	cd narad && pipenv run python manage.py runserver
+docker-compose-run:
+	docker-compose up --build
