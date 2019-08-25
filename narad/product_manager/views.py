@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, Http404
 from django.views import View
 from django.shortcuts import render
+from django.urls import reverse
 
 from product_manager import forms, models
 from .handlers import products_csv_uploader
@@ -22,7 +23,7 @@ class ProductUpdate(View):
     def get(self, request, product_id):
         try:
             product = models.Product.objects.get(pk=product_id)
-        except models.Product.DoesnotExists:
+        except models.Product.DoesNotExist:
             raise Http404("Product does not exist")
         form = forms.ProductForm(instance=product)
         return render(request, 'product_detail.html', {
@@ -32,7 +33,7 @@ class ProductUpdate(View):
     def post(self, request, product_id):
         try:
             product = models.Product.objects.get(pk=product_id)
-        except models.Product.DoesnotExists:
+        except models.Product.DoesNotExist:
             raise Http404("Product does not exist")
         form = forms.ProductForm(request.POST, instance=product)
         form.save()
@@ -49,3 +50,10 @@ class ProductCreate(View):
         form = forms.ProductForm(request.POST)
         form.save()
         return HttpResponseRedirect('/products')
+
+
+class ProductsDeleteAll(View):
+
+    def get(self, request):
+        models.Product.objects.all().delete()
+        return HttpResponseRedirect(reverse('products-upload'))
