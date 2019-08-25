@@ -17,5 +17,10 @@ urlpatterns = [
         'products/create/',
         views.ProductCreate.as_view(),
         name="product-create"
+    ),
+    path(
+        'products/delete/',
+        views.ProductsDeleteAll.as_view(),
+        name="products-delete"
     )
 ]
