@@ -1,0 +1,6 @@
+<h1> Product Detail form</h1>
+<form enctype="multipart/form-data" action="{% url 'product-create' %}" method="post">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Create">
+</form>

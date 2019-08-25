@@ -7,7 +7,7 @@ class ProductUploaderForm(forms.Form):
     file = forms.FileField()
 
 
-class ProductUpdateForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
 
     class Meta:
         model = models.Product
