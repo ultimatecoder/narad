@@ -1,3 +1,4 @@
+import asyncio
 import csv
 
 from django.conf import settings
@@ -6,6 +7,8 @@ from product_manager import models
 
 
 UPLOADED_FILE_NAME = settings.MEDIA_ROOT + '/products.csv'
+
+loop = asyncio.get_event_loop()
 
 
 def offload_records_to_db(file_path):
@@ -37,4 +40,5 @@ def products_csv_uploader(_file):
     with open(UPLOADED_FILE_NAME , 'wb+') as destination:
         for chunk in _file.chunks():
             destination.write(chunk)
-    offload_records_to_db(UPLOADED_FILE_NAME)
+    loop.run_in_executor(None, offload_records_to_db, UPLOADED_FILE_NAME)
+    #offload_records_to_db(UPLOADED_FILE_NAME)
