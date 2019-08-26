@@ -14,6 +14,11 @@ urlpatterns = [
         name="product-update"
     ),
     path(
+        'products/upload/progress/',
+        views.ProductsUploadProgress.as_view(),
+        name="products-upload-progress"
+    ),
+    path(
         'products/create/',
         views.ProductCreate.as_view(),
         name="product-create"
@@ -27,5 +32,5 @@ urlpatterns = [
         'products/',
         views.ProductsSearch.as_view(),
         name="products-search"
-    )
+    ),
 ]
