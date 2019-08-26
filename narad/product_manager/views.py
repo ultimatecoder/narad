@@ -1,3 +1,4 @@
+from django.http import QueryDict
 from django.http import HttpResponseRedirect, Http404
 from django.views import View
 from django.core.paginator import Paginator
@@ -63,63 +64,44 @@ class ProductsDeleteAll(View):
 class ProductsSearch(View):
 
     def get(self, request):
-        form = forms.ProductSearchForm(request.GET)
+        try:
+            page = request.GET['page']
+            request_data = request.GET.copy()
+            del request_data['page']
+        except KeyError:
+            page = None
+            request_data = request.GET
+        if request_data == {}:
+            form = forms.ProductSearchForm()
+            form_first_load = True
+            search_query_string = ''
+        else:
+            form_first_load = False
+            form = forms.ProductSearchForm(request_data)
+            search_query_string = form.data.urlencode()
         products_list = models.Product.objects.all()
-        paginator = Paginator(products_list, 20)
-        page = request.GET.get('page')
-        products = paginator.get_page(page)
-        #form = forms.ProductSearchForm(request.POST)
-        #products_list = models.Product.objects.all()
-        if form.data['name']:
+        if form.data.get('name'):
             products_list = products_list.filter(
                 name__contains=form.data['name']
             )
-        if form.data['description']:
+        if form.data.get('description'):
             products_list = products_list.filter(
                 description__contains=form.data['description']
             )
-        if form.data['sku']:
+        if form.data.get('sku'):
             products_list = products_list.filter(sku=form.data['sku'])
-        if form.data.get('is_active'):
+        if (form.data.get('is_active') == 'on') or (form_first_load):
             products_list = products_list.filter(is_active=True)
         else:
             products_list = products_list.filter(is_active=False)
         paginator = Paginator(products_list, 20)
-        page = request.GET.get('page')
         products = paginator.get_page(page)
         return render(
             request,
             'product_search.html',
-            {'form': form, 'products': products}
-        )
-        #return render(
-        #    request,
-        #    'product_search.html',
-        #    {'form': form, 'products': products}
-        #)
-
-    def post(self, request):
-        form = forms.ProductSearchForm(request.POST)
-        products_list = models.Product.objects.all()
-        if form.data['name']:
-            products_list = products_list.filter(
-                name__contains=form.data['name']
-            )
-        if form.data['description']:
-            products_list = products_list.filter(
-                description__contains=form.data['description']
-            )
-        if form.data['sku']:
-            products_list = products_list.filter(sku=form.data['sku'])
-        if form.data.get('is_active'):
-            products_list = products_list.filter(is_active=True)
-        else:
-            products_list = products_list.filter(is_active=False)
-        paginator = Paginator(products_list, 20)
-        page = request.GET.get('page')
-        products = paginator.get_page(page)
-        return render(
-            request,
-            'product_search.html',
-            {'form': form, 'products': products}
+            {
+                'form': form,
+                'products': products,
+                'search_query_string': search_query_string
+            }
         )

@@ -1,6 +1,6 @@
 <h1> Product Search</h1>
+{{ search_query_string }}
 <form enctype="multipart/form-data" action="{% url 'products-search' %}" method="get">
-  {% csrf_token %}
   {{ form }}
   <input type="submit" value="Search">
 </form>
@@ -31,8 +31,8 @@
 <div class="pagination">
     <span class="step-links">
         {% if products.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ products.previous_page_number }}">previous</a>
+            <a href="?page=1&{{ search_query_string }}">&laquo; first</a>
+            <a href="?page={{ products.previous_page_number }}&{{ search_query_string }}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -40,8 +40,8 @@
         </span>
 
         {% if products.has_next %}
-            <a href="?page={{ products.next_page_number }}">next</a>
-            <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ products.next_page_number }}&{{ search_query_string }}">next</a>
+            <a href="?page={{ products.paginator.num_pages }}&{{ search_query_string }}">last &raquo;</a>
         {% endif %}
     </span>
 </div>
