@@ -22,5 +22,10 @@ urlpatterns = [
         'products/delete/',
         views.ProductsDeleteAll.as_view(),
         name="products-delete"
+    ),
+    path(
+        'products/',
+        views.ProductsSearch.as_view(),
+        name="products-search"
     )
 ]
