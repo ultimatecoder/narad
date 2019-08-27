@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'django_eventstream',
     'product_manager'
 ]
 
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_grip.GripMiddleware'
 ]
 
 TEMPLATES = [
@@ -121,3 +124,6 @@ STATIC_URL = '/static/'
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+# ASGI
+ASGI_APPLICATION = 'narad.routing.application'

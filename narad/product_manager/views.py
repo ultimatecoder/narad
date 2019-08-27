@@ -105,3 +105,9 @@ class ProductsSearch(View):
                 'search_query_string': search_query_string
             }
         )
+
+
+class ProductsUploadProgress(View):
+
+    def get(self, request):
+        return render(request, 'products_upload_progress.html', {})
