@@ -1,6 +1,8 @@
 FROM python:latest
 
-WORKDIR /www/srv
+ENV STATIC_ROOT /srv/www/static
+
+WORKDIR /srv/www/app
 
 COPY uploads uploads
 
