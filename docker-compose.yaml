@@ -6,6 +6,8 @@ services:
       - 8000:8000
     links:
       - postgres
+    volumes:
+      - /tmp/static:/srv/www/static
     environment:
       - DATABASE_URL=postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgres:${POSTGRESQL_PORT}/postgres
       - DJANGO_SETTINGS_MODULE=narad.settings
@@ -18,3 +20,11 @@ services:
       - /tmp/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - /tmp/static:/srv/www/static
+    links:
+      - webapp
