@@ -1,8 +1,17 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block body %}
 <h1> Product Search</h1>
+
 {{ search_query_string }}
-<form enctype="multipart/form-data" action="{% url 'products-search' %}" method="get">
-  {{ form }}
-  <input type="submit" value="Search">
+<form enctype="multipart/form-data" action="{% url 'products-search' %}" method="get" class="form">
+  {% bootstrap_form form %}
+
+  {% buttons %}
+    <input type="submit" class="btn btn-primary">Search</button>
+  {% endbuttons %}
 </form>
 <table>
   <tr>
@@ -45,3 +54,4 @@
         {% endif %}
     </span>
 </div>
+{% endblock %}
