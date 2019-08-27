@@ -127,3 +127,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 # ASGI
 ASGI_APPLICATION = 'narad.routing.application'
+
+# Large upload files
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024*1024
