@@ -18,3 +18,11 @@ services:
       - /tmp/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - /tmp/static:/srv/www/static
+    links:
+      - webapp
