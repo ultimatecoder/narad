@@ -1,5 +1,6 @@
 import asyncio
 import csv
+import os
 import uuid
 
 from django.conf import settings
@@ -51,6 +52,7 @@ def offload_records_to_db(file_path):
             ['name', 'description']
         )
     send_event("test", "message", "uploading completed")
+    os.remove(file_path)
 
 
 def products_csv_uploader(_file):
