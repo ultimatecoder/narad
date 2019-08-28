@@ -33,4 +33,9 @@ urlpatterns = [
         views.ProductsSearch.as_view(),
         name="products-search"
     ),
+    path(
+        '',
+        views.Home.as_view(),
+        name="index"
+    )
 ]

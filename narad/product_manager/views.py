@@ -111,3 +111,9 @@ class ProductsUploadProgress(View):
 
     def get(self, request):
         return render(request, 'products_upload_progress.html', {})
+
+
+class Home(View):
+
+    def get(self, request):
+        return render(request, 'index.html', {})

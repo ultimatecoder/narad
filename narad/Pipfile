@@ -12,6 +12,7 @@ dj-database-url = "*"
 psycopg2 = "*"
 django-eventstream = "*"
 daphne = "*"
+django-bootstrap4 = "*"
 
 [requires]
 python_version = "3.7"
