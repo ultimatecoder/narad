@@ -46,6 +46,7 @@ def offload_records_to_db(file_path):
             products_to_be_updated.values(),
             ['name', 'description']
         )
+    send_event("test", "message", "uploading completed")
 
 
 def products_csv_uploader(_file):

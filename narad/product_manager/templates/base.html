@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    {% load static %}
     {% load bootstrap4 %}
 
     <!-- Bootstrap CSS -->
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <title>Hello, world!</title>
   </head>
@@ -18,5 +18,11 @@
       {% block body %}
       {% endblock %}
     </div>
+    {% bootstrap_javascript jquery='full' %}
+    <script type="text/javascript" src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
+
+    {% block javascript %}
+    {% endblock %}
   </body>
 </html>
