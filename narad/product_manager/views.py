@@ -14,7 +14,7 @@ def upload_products(request):
         form = forms.ProductUploaderForm(request.POST, request.FILES)
         if form.is_valid():
             products_csv_uploader(request.FILES['file'])
-            return HttpResponseRedirect('/products')
+            return HttpResponseRedirect(reverse("products-upload-progress"))
     else:
         form = forms.ProductUploaderForm()
         return render(request, 'upload.html', {'form': form})
@@ -111,3 +111,9 @@ class ProductsUploadProgress(View):
 
     def get(self, request):
         return render(request, 'products_upload_progress.html', {})
+
+
+class Home(View):
+
+    def get(self, request):
+        return render(request, 'index.html', {})

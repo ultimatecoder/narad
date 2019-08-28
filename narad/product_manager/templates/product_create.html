@@ -1,6 +1,19 @@
-<h1> Product Detail form</h1>
-<form enctype="multipart/form-data" action="{% url 'product-create' %}" method="post">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Create">
-</form>
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-md-8">
+      <form enctype="multipart/form-data" action="{% url 'product-create' %}" method="post" class="form">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">Create</button>
+        {% endbuttons %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

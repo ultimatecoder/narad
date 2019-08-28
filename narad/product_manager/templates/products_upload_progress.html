@@ -1,22 +1,18 @@
-<html>
-  <head>
-    <title>Product Upload Progress</title>
-    {% load static %}
-    <script type="text/javascript" src="{% static  'jquery-3.4.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main.js' %}"></script>
-    <!--<script type="text/javascript">
-      eventSource = new EventSource("/events/");
-      eventSource.addEventListener('message', function (e) {
-          console.log(e.data);
-          $(".
-      });
-    </script>
-    -->
-  </head>
-  <body>
-    <h1>Product Upload Progress</h1>
-    <div id="message">Products are uploading...</div>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="text-center">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div>
+        <div class="text-muted" id="message">Products are uploading...</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript" src="{% static 'main.js' %}"></script>
+{% endblock %}
