@@ -1,5 +1,7 @@
 import asyncio
 import csv
+import os
+import uuid
 
 from django.conf import settings
 from django_eventstream import send_event
@@ -7,10 +9,13 @@ from django_eventstream import send_event
 from product_manager import models
 
 
-UPLOADED_FILE_NAME = settings.MEDIA_ROOT + '/products.csv'
-
 asyncio.set_event_loop(asyncio.new_event_loop())
 loop = asyncio.get_event_loop()
+
+
+def generate_new_csv_file_name():
+    file_id = uuid.uuid4()
+    return f"{file_id}.csv"
 
 
 def offload_records_to_db(file_path):
@@ -47,11 +52,14 @@ def offload_records_to_db(file_path):
             ['name', 'description']
         )
     send_event("test", "message", "uploading completed")
+    os.remove(file_path)
 
 
 def products_csv_uploader(_file):
-    with open(UPLOADED_FILE_NAME , 'wb+') as destination:
+    file_name = generate_new_csv_file_name()
+    file_path = f"{settings.MEDIA_ROOT}/{file_name}"
+
+    with open(file_path , 'wb+') as destination:
         for chunk in _file.chunks():
             destination.write(chunk)
-    loop.run_in_executor(None, offload_records_to_db, UPLOADED_FILE_NAME)
-    #offload_records_to_db(UPLOADED_FILE_NAME)
+    loop.run_in_executor(None, offload_records_to_db, file_path)
