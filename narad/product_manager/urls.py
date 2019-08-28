@@ -1,7 +1,6 @@
 from django.urls import path
 
-from product_manager import views
-
+from product_manager import views, models
 
 app_name = 'product_manager'
 
