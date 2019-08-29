@@ -18,12 +18,12 @@ urlpatterns = [
         name="products-upload-progress"
     ),
     path(
-        'products/create/',
+        'products-create/',
         views.ProductCreate.as_view(),
         name="product-create"
     ),
     path(
-        'products/delete/',
+        'products-delete/',
         views.ProductsDeleteAll.as_view(),
         name="products-delete"
     ),

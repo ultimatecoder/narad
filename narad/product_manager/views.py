@@ -116,4 +116,5 @@ class ProductsUploadProgress(View):
 class Home(View):
 
     def get(self, request):
-        return render(request, 'index.html', {})
+        return HttpResponseRedirect(reverse('products-search'))
+
