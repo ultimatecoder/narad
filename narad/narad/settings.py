@@ -14,6 +14,7 @@ import os
 
 import dj_database_url
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'channels',
     'django_eventstream',
     'bootstrap4',
-    'product_manager'
+    'product_manager',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ WSGI_APPLICATION = 'narad.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(default="sqlite:///db.sqlite3")
 }
 
 
@@ -131,3 +132,4 @@ ASGI_APPLICATION = 'narad.routing.application'
 
 # Large upload files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024*1024
+

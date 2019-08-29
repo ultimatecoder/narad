@@ -39,10 +39,10 @@
         },
         "autobahn": {
             "hashes": [
-                "sha256:294e7381dd54e73834354832604ae85567caf391c39363fed0ea2bfa86aa4304",
-                "sha256:312d0c7b9d970219002a966ec36d559245bf9c6987a787c8c41f17eb53dd36da"
+                "sha256:11878ebfd4a83b85043c627a46f75b5ea8461f9f0655e27d0b13e6bf19404242",
+                "sha256:17f4bd5adbe3fcb757c427867af2ef7d21786afdfc060b04fa9eb84f93e54ba8"
             ],
-            "version": "==19.8.1"
+            "version": "==19.9.1"
         },
         "automat": {
             "hashes": [

@@ -20,7 +20,6 @@ def generate_new_csv_file_name():
 
 def offload_records_to_db(file_path):
     products_to_be_created = {}
-    products_to_be_updated = {}
     send_event('test', 'message', "Document uploaded successfully!")
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -31,25 +30,17 @@ def offload_records_to_db(file_path):
                 name=row['name'],
                 description=row['description']
             )
-            #if models.Product.objects.filter(sku=row['sku']).exists():
-            #    products_to_be_updated[row['sku']] = product
-            #else:
-            #    products_to_be_created[row['sku']] = product
             products_to_be_created[row['sku']] = product
         new_products = len(products_to_be_created)
-
-        send_event('test', 'message', f"Found {new_products} to be created")
+        send_event('test', 'message', f"Found {new_products} products...")
         models.Product.objects.bulk_create(
-            products_to_be_created.values()
+            products_to_be_created.values(),
+            ignore_conflicts=True
         )
         send_event(
             'test',
             'message',
             f"Uploaded {new_products} products successfully!"
-        )
-        models.Product.objects.bulk_update(
-            products_to_be_updated.values(),
-            ['name', 'description']
         )
     send_event("test", "message", "uploading completed")
     os.remove(file_path)
