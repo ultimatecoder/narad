@@ -5,20 +5,21 @@
 {% block body %}
 <div class="row">
   <div class="col-md-8">
-    <form enctype="multipart/form-data" action="{% url 'products-search' %}" method="get" class="form">
-      {% bootstrap_form form %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Search Product</h5>
+        <form enctype="multipart/form-data" action="{% url 'products-search' %}" method="get" class="form">
+          {% bootstrap_form form %}
 
-      {% buttons %}
-        <button type="submit" class="btn btn-primary">Search</button>
-      {% endbuttons %}
-    </form>
+          {% buttons %}
+            <button type="submit" class="btn btn-primary">Search</button>
+          {% endbuttons %}
+        </form>
+      </div>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <a href="{% url 'product-create' %}" class="btn btn-dark">Create new Product</a>
-  </div>
-</div>
+<hr/>
 <div class="row">
   <div class="col-md-12">
     <table class="table table-striped table-bordered">
