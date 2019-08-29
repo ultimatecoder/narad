@@ -19,7 +19,7 @@ def generate_new_csv_file_name():
 
 
 def offload_records_to_db(file_path):
-    products_to_be_created = {}
+    products = {}
     send_event('test', 'message', "Document uploaded successfully!")
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -30,17 +30,41 @@ def offload_records_to_db(file_path):
                 name=row['name'],
                 description=row['description']
             )
-            products_to_be_created[row['sku']] = product
-        new_products = len(products_to_be_created)
-        send_event('test', 'message', f"Found {new_products} products...")
+            products[row['sku']] = product
+        existing_products = models.Product.objects.filter(
+            sku__in=products.keys()
+        )
+        products_to_be_updated = []
+        for existing_product in existing_products:
+            product = products[existing_product.pk]
+            del products[existing_product.pk]
+            if (
+                (product.name != existing_product.name) or
+                (product.description != existing_product.description)
+            ):
+                existing_product.name = product.name
+                existing_product.description = product.description
+                products_to_be_updated.append(existing_product)
+        new_products = len(products)
+        send_event('test', 'message', f"Found {new_products} new products...")
         models.Product.objects.bulk_create(
-            products_to_be_created.values(),
+            products.values(),
             ignore_conflicts=True
+        )
+        existing_products = len(products_to_be_updated)
+        send_event(
+            'test',
+            'message',
+            f"Found {existing_products} existing products to be updated..."
+        )
+        models.Product.objects.bulk_update(
+            products_to_be_updated,
+            ['name', 'description']
         )
         send_event(
             'test',
             'message',
-            f"Uploaded {new_products} products successfully!"
+            "Uploaded products successfully!"
         )
     send_event("test", "message", "uploading completed")
     os.remove(file_path)
