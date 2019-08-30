@@ -16,6 +16,11 @@ COPY Pipfile.lock .
 
 RUN pipenv install
 
+# NOTE: This is custom hack especially for Heorku container registery
+RUN pipenv lock -r > /tmp/requirements.txt
+
+RUN pip install --no-cache-dir -q -r /tmp/requirements.txt
+
 COPY narad narad
 
 COPY product_manager product_manager
