@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'django_eventstream',
+    'django_celery_results',
     'bootstrap4',
     'product_manager',
 ]
@@ -134,3 +135,14 @@ ASGI_APPLICATION = 'narad.routing.application'
 
 # Large upload files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024*1024
+
+# Redis
+REDISGO_URL = os.environ.get('REDISGO_URL', 'redis://localhost:6379')
+
+# Celery
+CELERY_BROKER_URL = os.environ.get(
+    'CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672//'
+)
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'

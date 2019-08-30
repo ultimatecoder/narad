@@ -14,6 +14,9 @@ django-eventstream = "*"
 daphne = "*"
 django-bootstrap4 = "*"
 whitenoise = "*"
+redis = "*"
+celery = "*"
+django-celery-results = "*"
 
 [requires]
 python_version = "3.7"
