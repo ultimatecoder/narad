@@ -13,6 +13,12 @@ psycopg2 = "*"
 django-eventstream = "*"
 daphne = "*"
 django-bootstrap4 = "*"
+whitenoise = "*"
+redis = "*"
+celery = "*"
+django-celery-results = "*"
+boto3 = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.7"

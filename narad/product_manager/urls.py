@@ -6,7 +6,12 @@ app_name = 'product_manager'
 
 
 urlpatterns = [
-    path('products/upload/', views.upload_products, name="products-upload"),
+    #path('products/upload/', views.upload_products, name="products-upload"),
+    path(
+        'products/upload/',
+        views.ProductsAsCsvFileCreateView.as_view(),
+        name="products-upload"
+    ),
     path(
         'products/<str:product_id>/',
         views.ProductUpdate.as_view(),

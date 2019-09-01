@@ -26,9 +26,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ci$tyspoia+=fd@2il5q92y$erz1c#xk2b%=s548hl^t!5vv2#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =  ['*']
 
 ROOT_URLCONF = 'narad.urls'
 
@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'django_eventstream',
+    'django_celery_results',
     'bootstrap4',
+    'storages',
     'product_manager',
 ]
 
@@ -55,7 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_grip.GripMiddleware'
+    'django_grip.GripMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 TEMPLATES = [
@@ -123,6 +126,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR, 'static'))
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
@@ -133,3 +137,23 @@ ASGI_APPLICATION = 'narad.routing.application'
 # Large upload files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024*1024
 
+# Redis
+REDISGO_URL = os.environ.get('REDISGO_URL', 'redis://localhost:6379')
+
+# Celery
+CELERY_BROKER_URL = os.environ.get(
+    'CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672//'
+)
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+# AWS S3
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazon.com"
+
+# Storage
+DEFAULT_FILE_STORAGE = 'narad.storage_backends.MediaStorage'

@@ -4,8 +4,6 @@ ENV STATIC_ROOT /srv/www/static
 
 WORKDIR /srv/www/app
 
-COPY uploads uploads
-
 RUN pip install pipenv
 
 COPY manage.py .
@@ -15,6 +13,11 @@ COPY Pipfile .
 COPY Pipfile.lock .
 
 RUN pipenv install
+
+# NOTE: This is custom hack especially for Heorku container registery
+RUN pipenv lock -r > /tmp/requirements.txt
+
+RUN pip install --no-cache-dir -q -r /tmp/requirements.txt
 
 COPY narad narad
 

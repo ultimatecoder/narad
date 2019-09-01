@@ -127,3 +127,6 @@ dmypy.json
 
 # local db
 narad/db.sqlite3
+
+# local environment
+.env
