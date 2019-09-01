@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_eventstream',
     'django_celery_results',
     'bootstrap4',
+    'storages',
     'product_manager',
 ]
 
@@ -146,3 +147,13 @@ CELERY_BROKER_URL = os.environ.get(
 
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
+
+# AWS S3
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazon.com"
+
+# Storage
+DEFAULT_FILE_STORAGE = 'narad.storage_backends.MediaStorage'

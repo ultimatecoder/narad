@@ -10,3 +10,8 @@ class Product(models.Model):
     )
     description = models.TextField()
     is_active = models.BooleanField(default=True)
+
+
+class ProductsAsCsvFile(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = models.FileField()

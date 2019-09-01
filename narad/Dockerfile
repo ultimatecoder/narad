@@ -4,8 +4,6 @@ ENV STATIC_ROOT /srv/www/static
 
 WORKDIR /srv/www/app
 
-COPY uploads uploads
-
 RUN pip install pipenv
 
 COPY manage.py .

@@ -1,9 +1,10 @@
 from django.http import QueryDict
 from django.http import HttpResponseRedirect, Http404
 from django.views import View
+from django.views.generic.edit import CreateView
 from django.core.paginator import Paginator
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from product_manager import forms, models
 from .handlers import products_csv_uploader
@@ -18,6 +19,13 @@ def upload_products(request):
     else:
         form = forms.ProductUploaderForm()
         return render(request, 'upload.html', {'form': form})
+
+
+class ProductsAsCsvFileCreateView(CreateView):
+
+    model = models.ProductsAsCsvFile
+    fields = ['upload', ]
+    success_url = reverse_lazy('products-upload-progress')
 
 
 class ProductUpdate(View):
@@ -117,4 +125,3 @@ class Home(View):
 
     def get(self, request):
         return HttpResponseRedirect(reverse('products-search'))
-

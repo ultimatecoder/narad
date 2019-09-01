@@ -17,6 +17,8 @@ whitenoise = "*"
 redis = "*"
 celery = "*"
 django-celery-results = "*"
+boto3 = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.7"
