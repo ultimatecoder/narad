@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 django = "*"
-gunicorn = "*"
 dj-database-url = "*"
 psycopg2 = "*"
 django-eventstream = "*"
