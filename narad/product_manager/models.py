@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth import models as user_models
+from psqlextra.models import PostgresModel
 
 
-class Product(models.Model):
+class Product(PostgresModel):
 
     name = models.CharField(max_length=200, blank=None, null=None)
     sku = models.CharField(
