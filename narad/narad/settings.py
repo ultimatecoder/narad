@@ -23,7 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ci$tyspoia+=fd@2il5q92y$erz1c#xk2b%=s548hl^t!5vv2#'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', 'ci$tyspoia+=fd@2il5q92y$erz1c#xk2b%=s548hl^t!5vv2#'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
@@ -137,9 +139,6 @@ ASGI_APPLICATION = 'narad.routing.application'
 # Large upload files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10*1024*1024*1024
 
-# Redis
-REDISGO_URL = os.environ.get('REDISGO_URL', 'redis://localhost:6379')
-
 # Celery
 CELERY_BROKER_URL = os.environ.get(
     'CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672//'
@@ -157,3 +156,8 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazon.com"
 
 # Storage
 DEFAULT_FILE_STORAGE = 'narad.storage_backends.MediaStorage'
+
+# CSV File
+BATCH_SIZE_OF_PRODUCT_RECORDS = int(os.environ.get(
+    "BATCH_SIZE_OF_PRODUCT_RECORDS", '100'
+))

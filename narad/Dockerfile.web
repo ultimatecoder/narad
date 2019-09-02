@@ -23,6 +23,6 @@ COPY narad narad
 
 COPY product_manager product_manager
 
-COPY start.sh .
+COPY start_web.sh .
 
-CMD bash start.sh
+CMD bash start_web.sh

@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 
-from product_manager import forms, models
+from product_manager import forms, models, tasks
 from .handlers import products_csv_uploader
 
 
@@ -26,6 +26,13 @@ class ProductsAsCsvFileCreateView(CreateView):
     model = models.ProductsAsCsvFile
     fields = ['upload', ]
     success_url = reverse_lazy('products-upload-progress')
+
+    def form_valid(self, form, *args, **kwargs):
+        redirect_url = super(
+            ProductsAsCsvFileCreateView, self
+        ).form_valid(form)
+        tasks.upload_products_as_csv_file.delay(self.object.pk)
+        return redirect_url
 
 
 class ProductUpdate(View):
