@@ -1,24 +1,27 @@
 version: '3'
 services:
   webapp:
-    build: ./narad
+    build:
+      context: ./narad
+      dockerfile: Dockerfile.web
     ports:
       - 8000:8000
     links:
       - postgres
-      - redis
+      - rabbitmq
+      - worker
     volumes:
       - /tmp/static:/srv/www/static
-      - /tmp/uploads:/srv/www/app/uploads
     environment:
       - DATABASE_URL=postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgres:${POSTGRESQL_PORT}/postgres
       - DJANGO_SETTINGS_MODULE=narad.settings
       - WEBTIMEOUT=${WEBTIMEOUT}
       - PORT=8000
-      - REDISGO_URL=redis://redis:6379
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - CLOUDAMQP_URL=amqp://guest:guest@rabbitmq:5672//
+      - BATCH_SIZE_OF_PRODUCT_RECORDS=100000
   postgres:
     image: postgres
     ports:
@@ -27,9 +30,25 @@ services:
       - /tmp/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-  redis:
-    image: redis
+  worker:
+    build:
+      context: ./narad
+      dockerfile: Dockerfile.worker
+    environment:
+      - DATABASE_URL=postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@postgres:${POSTGRESQL_PORT}/postgres
+      - DJANGO_SETTINGS_MODULE=narad.settings
+      - WEBTIMEOUT=${WEBTIMEOUT}
+      - PORT=8000
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - CLOUDAMQP_URL=amqp://guest:guest@rabbitmq:5672//
+      - BATCH_SIZE_OF_PRODUCT_RECORDS=100000
+    command: ["celery", "-A", "narad", "worker", "-l", "info"]
+    links:
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3
     ports:
-      - 6379:6379
-    volumes:
-      - /tmp/redis:/data
+      - 5672:5672
+    hostname: my-rabbit

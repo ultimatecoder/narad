@@ -18,6 +18,7 @@ celery = "*"
 django-celery-results = "*"
 boto3 = "*"
 django-storages = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"

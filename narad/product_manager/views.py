@@ -125,7 +125,6 @@ class ProductsSearch(View):
 class ProductsUploadProgress(View):
 
     def get(self, request):
-        import pdb; pdb.set_trace()  # XXX BREAKPOINT
         return render(request, 'products_upload_progress.html', {})
 
 
