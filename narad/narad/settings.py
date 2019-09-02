@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django_celery_results',
     'bootstrap4',
     'storages',
+    'django.contrib.postgres',
+    'psqlextra',
     'product_manager',
 ]
 
@@ -86,8 +88,12 @@ WSGI_APPLICATION = 'narad.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default="sqlite:///db.sqlite3")
+    'default': dj_database_url.config(
+        default="postgres://postgres:postgres@localhost:5432/test_db"
+    )
 }
+
+DATABASES['default']['ENGINE'] = 'psqlextra.backend'
 
 
 # Password validation
@@ -159,5 +165,5 @@ DEFAULT_FILE_STORAGE = 'narad.storage_backends.MediaStorage'
 
 # CSV File
 BATCH_SIZE_OF_PRODUCT_RECORDS = int(os.environ.get(
-    "BATCH_SIZE_OF_PRODUCT_RECORDS", '100'
+    "BATCH_SIZE_OF_PRODUCT_RECORDS", '100000000'
 ))

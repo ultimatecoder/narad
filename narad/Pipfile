@@ -19,6 +19,7 @@ django-celery-results = "*"
 boto3 = "*"
 django-storages = "*"
 pandas = "*"
+django-postgres-extra = "*"
 
 [requires]
 python_version = "3.7"

@@ -10,17 +10,6 @@ from product_manager import forms, models, tasks
 from .handlers import products_csv_uploader
 
 
-def upload_products(request):
-    if request.method == 'POST':
-        form = forms.ProductUploaderForm(request.POST, request.FILES)
-        if form.is_valid():
-            products_csv_uploader(request.FILES['file'])
-            return HttpResponseRedirect(reverse("products-upload-progress"))
-    else:
-        form = forms.ProductUploaderForm()
-        return render(request, 'upload.html', {'form': form})
-
-
 class ProductsAsCsvFileCreateView(CreateView):
 
     model = models.ProductsAsCsvFile
