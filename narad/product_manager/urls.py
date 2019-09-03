@@ -6,7 +6,6 @@ app_name = 'product_manager'
 
 
 urlpatterns = [
-    #path('products/upload/', views.upload_products, name="products-upload"),
     path(
         'products/upload/',
         views.ProductsAsCsvFileCreateView.as_view(),
@@ -18,7 +17,7 @@ urlpatterns = [
         name="product-update"
     ),
     path(
-        'products/upload/progress/',
+        'products/upload/progress/<str:task_id>',
         views.ProductsUploadProgress.as_view(),
         name="products-upload-progress"
     ),

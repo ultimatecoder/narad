@@ -9,7 +9,6 @@ verify_ssl = true
 django = "*"
 dj-database-url = "*"
 psycopg2 = "*"
-django-eventstream = "*"
 daphne = "*"
 django-bootstrap4 = "*"
 whitenoise = "*"
@@ -20,6 +19,7 @@ boto3 = "*"
 django-storages = "*"
 pandas = "*"
 django-postgres-extra = "*"
+channels-redis = "*"
 
 [requires]
 python_version = "3.7"

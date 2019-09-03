@@ -10,6 +10,7 @@ services:
       - postgres
       - rabbitmq
       - worker
+      - redis
     volumes:
       - /tmp/static:/srv/www/static
     environment:
@@ -22,6 +23,9 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - CLOUDAMQP_URL=amqp://guest:guest@rabbitmq:5672//
       - BATCH_SIZE_OF_PRODUCT_RECORDS=100000
+      - REDIS_URL=redis://@redis:6379/0
+    stdin_open: true
+    tty: true
   postgres:
     image: postgres
     ports:
@@ -44,11 +48,19 @@ services:
       - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
       - CLOUDAMQP_URL=amqp://guest:guest@rabbitmq:5672//
       - BATCH_SIZE_OF_PRODUCT_RECORDS=100000
+      - REDIS_URL=redis://@redis:6379/0
     command: ["celery", "-A", "narad", "worker", "-l", "info"]
     links:
       - rabbitmq
+      - redis
   rabbitmq:
     image: rabbitmq:3
     ports:
       - 5672:5672
     hostname: my-rabbit
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - /tmp/redis:/data

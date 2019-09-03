@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from urllib.parse import urlparse
 
 import dj_database_url
 
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    'django_eventstream',
+    'channels_redis',
     'django_celery_results',
     'bootstrap4',
     'storages',
@@ -61,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_grip.GripMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -150,7 +150,17 @@ CELERY_BROKER_URL = os.environ.get(
     'CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672//'
 )
 
-CELERY_RESULT_BACKEND = 'django-db'
+# Redis
+
+REDIS_URL = os.environ.get("REDIS_URL")
+REDIS_CONFIG = urlparse(REDIS_URL)
+
+CELERY_RESULT_BACKEND = 'redis'
+CELERY_REDIS_HOST = REDIS_CONFIG.hostname
+CELERY_REDIS_PORT = REDIS_CONFIG.port
+CELERY_REDIS_DB = 0
+CELERY_REDIS_PASSWORD = REDIS_CONFIG.password
+
 CELERY_CACHE_BACKEND = 'django-cache'
 
 # AWS S3
@@ -167,3 +177,13 @@ DEFAULT_FILE_STORAGE = 'narad.storage_backends.MediaStorage'
 BATCH_SIZE_OF_PRODUCT_RECORDS = int(os.environ.get(
     "BATCH_SIZE_OF_PRODUCT_RECORDS", '100000000'
 ))
+
+# Django Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(REDIS_CONFIG.hostname, REDIS_CONFIG.port)],
+        }
+    },
+}
