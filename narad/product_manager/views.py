@@ -1,3 +1,7 @@
+import asyncio
+from threading import Thread
+
+from celery.result import AsyncResult
 from django.http import QueryDict
 from django.http import HttpResponseRedirect, Http404
 from django.views import View
@@ -14,14 +18,18 @@ class ProductsAsCsvFileCreateView(CreateView):
 
     model = models.ProductsAsCsvFile
     fields = ['upload', ]
-    success_url = reverse_lazy('products-upload-progress')
 
     def form_valid(self, form, *args, **kwargs):
         redirect_url = super(
             ProductsAsCsvFileCreateView, self
         ).form_valid(form)
-        tasks.upload_products_as_csv_file.delay(self.object.pk)
         return redirect_url
+
+    def get_success_url(self):
+        task_id = tasks.upload_products_as_csv_file.delay(self.object.pk)
+        return reverse_lazy(
+            'products-upload-progress', kwargs={'task_id': task_id}
+        )
 
 
 class ProductUpdate(View):
@@ -113,8 +121,13 @@ class ProductsSearch(View):
 
 class ProductsUploadProgress(View):
 
-    def get(self, request):
-        return render(request, 'products_upload_progress.html', {})
+    def get(self, request, task_id):
+        task = AsyncResult(task_id)
+        return render(
+            request,
+            'products_upload_progress.html',
+            {'task_id': task_id}
+        )
 
 
 class Home(View):
