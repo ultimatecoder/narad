@@ -11,7 +11,6 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 
 from product_manager import forms, models, tasks
-from .handlers import products_csv_uploader
 
 
 class ProductsAsCsvFileCreateView(CreateView):
